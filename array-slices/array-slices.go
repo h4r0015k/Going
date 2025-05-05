@@ -17,3 +17,17 @@ func SumAll(numbersToSum ...[]int) []int {
 
 	return nums
 }
+
+func SumAllTails(slices ...[]int) (sum []int) {
+
+	for _, toSum := range slices {
+		if len(toSum) == 0 {
+			sum = append(sum, 0)
+		} else {
+			sum = append(sum, Sum(toSum[1:]))
+
+		}
+	}
+
+	return
+}
