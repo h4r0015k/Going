@@ -43,6 +43,41 @@ func TestAdd(t *testing.T) {
 	})
 }
 
+func TestUpdate(t *testing.T) {
+	t.Run("word exists", func(t *testing.T) {
+		dictionary := Dictionary{"test": "this is just a word"}
+		err := dictionary.Update("test", "this is a test")
+
+		assertError(t, err, nil)
+		assertDef(t, dictionary, "test")
+	})
+
+	t.Run("word does not exists", func(t *testing.T) {
+		dictionary := Dictionary{}
+		err := dictionary.Update("test", "this is a test")
+
+		assertError(t, err, errAlreadyExists)
+	})
+}
+
+func TestDelete(t *testing.T) {
+	t.Run("word exists", func(t *testing.T) {
+		dictionary := Dictionary{"test": "this is just a word"}
+		err := dictionary.Delete("test")
+		_, searchErr := dictionary.Search("test")
+
+		assertError(t, err, nil)
+		assertError(t, searchErr, errNotFound)
+	})
+
+	t.Run("word does not exists", func(t *testing.T) {
+		dictionary := Dictionary{}
+		err := dictionary.Delete("test")
+
+		assertError(t, err, errNotFound)
+	})
+}
+
 func assertDef(t testing.TB, dictionary Dictionary, key string) {
 	t.Helper()
 
